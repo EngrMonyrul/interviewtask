@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:interviewtask/models/database.dart';
 import 'package:interviewtask/models/task_model.dart';
 import 'package:interviewtask/views/homePage/home_page_view.dart';
+import 'package:interviewtask/views/homePage/subViews/addTask/widgets/input_field_title.dart';
+import 'package:interviewtask/views/homePage/subViews/addTask/widgets/task_status.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import '../../../../controls/providers/home_page_provider.dart';
@@ -141,48 +143,6 @@ class _AddTaskViewState extends State<AddTaskView> {
         );
       },
       child: const Text('Submit'),
-    );
-  }
-
-  Row taskStatus(HomePageProvider property) {
-    return Row(
-      children: [
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Task Status:',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-        const SizedBox(width: 30),
-        DropdownButton<bool>(
-          hint: const Text('Select'),
-          value: property.status,
-          onChanged: (actionValue) {
-            property.setStatus(value: actionValue!);
-          },
-          items: const [
-            DropdownMenuItem(
-              value: true,
-              child: Text('Completed'),
-            ),
-            DropdownMenuItem(
-              value: false,
-              child: Text('Backlog'),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Text inputFieldTitle() {
-    return const Text(
-      'Add Your Informations',
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        fontSize: 30,
-      ),
     );
   }
 }

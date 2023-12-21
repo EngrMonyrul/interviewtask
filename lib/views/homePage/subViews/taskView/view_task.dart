@@ -52,111 +52,129 @@ class _TaskViewPageState extends State<TaskViewPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Text(
-                    '${widget.task.id}',
-                    style: const TextStyle(fontSize: 40),
-                  ),
-                ),
+                titleShow(),
                 const SizedBox(height: 20),
-                Text.rich(
-                  TextSpan(
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
-                    children: [
-                      const TextSpan(
-                        text: 'Status: ',
-                        style: TextStyle(
-                          color: Colors.deepOrange,
-                        ),
-                      ),
-                      TextSpan(
-                        text: (widget.task.status == 0) ? 'Completed' : 'Backlog',
-                      )
-                    ],
-                  ),
-                ),
-                Text.rich(
-                  TextSpan(
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
-                    children: [
-                      const TextSpan(
-                        text: 'Title: ',
-                        style: TextStyle(
-                          color: Colors.deepOrange,
-                        ),
-                      ),
-                      TextSpan(
-                        text: widget.task.title,
-                      )
-                    ],
-                  ),
-                ),
-                Text.rich(
-                  TextSpan(
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
-                    children: [
-                      const TextSpan(
-                        text: 'Description: ',
-                        style: TextStyle(
-                          color: Colors.deepOrange,
-                        ),
-                      ),
-                      TextSpan(
-                        text: widget.task.description,
-                      )
-                    ],
-                  ),
-                ),
+                statusArea(),
+                titleArea(),
+                descriptionArea(),
                 const Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    actionButton(
-                      title: 'Edit',
-                      iconData: CupertinoIcons.pen,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddTaskView(
-                              databaseHandler: widget.databaseHandler,
-                              task: widget.task,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    actionButton(
-                      title: 'Delete',
-                      iconData: CupertinoIcons.delete,
-                      onPressed: () async {
-                        await widget.databaseHandler.deleteTask(id: widget.task.id);
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.success,
-                          title: 'Delete File Successfully',
-                          onConfirmBtnTap: () {
-                            widget.databaseHandler.fetchTasks();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomePageView(databaseHandler: widget.databaseHandler)));
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                )
+                Buttons(context)
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Row Buttons(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        actionButton(
+          title: 'Edit',
+          iconData: CupertinoIcons.pen,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddTaskView(
+                  databaseHandler: widget.databaseHandler,
+                  task: widget.task,
+                ),
+              ),
+            );
+          },
+        ),
+        actionButton(
+          title: 'Delete',
+          iconData: CupertinoIcons.delete,
+          onPressed: () async {
+            await widget.databaseHandler.deleteTask(id: widget.task.id);
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.success,
+              title: 'Delete File Successfully',
+              onConfirmBtnTap: () {
+                widget.databaseHandler.fetchTasks();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomePageView(databaseHandler: widget.databaseHandler)));
+              },
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Text descriptionArea() {
+    return Text.rich(
+      TextSpan(
+        style: const TextStyle(
+          fontSize: 20,
+        ),
+        children: [
+          const TextSpan(
+            text: 'Description: ',
+            style: TextStyle(
+              color: Colors.deepOrange,
+            ),
+          ),
+          TextSpan(
+            text: widget.task.description,
+          )
+        ],
+      ),
+    );
+  }
+
+  Text titleArea() {
+    return Text.rich(
+      TextSpan(
+        style: const TextStyle(
+          fontSize: 20,
+        ),
+        children: [
+          const TextSpan(
+            text: 'Title: ',
+            style: TextStyle(
+              color: Colors.deepOrange,
+            ),
+          ),
+          TextSpan(
+            text: widget.task.title,
+          )
+        ],
+      ),
+    );
+  }
+
+  Text statusArea() {
+    return Text.rich(
+      TextSpan(
+        style: const TextStyle(
+          fontSize: 20,
+        ),
+        children: [
+          const TextSpan(
+            text: 'Status: ',
+            style: TextStyle(
+              color: Colors.deepOrange,
+            ),
+          ),
+          TextSpan(
+            text: (widget.task.status == 0) ? 'Completed' : 'Backlog',
+          )
+        ],
+      ),
+    );
+  }
+
+  Center titleShow() {
+    return Center(
+      child: Text(
+        '${widget.task.id}',
+        style: const TextStyle(fontSize: 40),
       ),
     );
   }
